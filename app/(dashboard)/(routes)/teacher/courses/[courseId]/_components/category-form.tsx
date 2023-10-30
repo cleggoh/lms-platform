@@ -29,7 +29,9 @@ interface CategoryFormProps {
 }
 
 const formSchema = z.object({
-  categoryId: z.string().min(1),
+  categoryId: z.string().min(1, {
+    message: "Select a Category",
+  }),
 });
 
 const CategoryForm = ({
@@ -40,8 +42,6 @@ const CategoryForm = ({
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
-
-  const selectedCategory = () => {};
 
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({

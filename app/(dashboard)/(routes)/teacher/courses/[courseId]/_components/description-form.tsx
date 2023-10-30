@@ -27,7 +27,9 @@ interface DescriptionFormProps {
 }
 
 const formSchema = z.object({
-  description: z.string(),
+  description: z.string().min(1, {
+    message: "Description is required",
+  }),
 });
 
 const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps) => {
