@@ -13,33 +13,42 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { Textarea } from "@/components/ui/textarea";
+import { Course } from "@prisma/client";
+import { Combobox } from "@/components/ui/combobox";
 
-interface TitleFormProps {
-  initialData: {
-    title: string;
-  };
+interface CategoryFormProps {
+  initialData: Course;
   courseId: string;
+  options: { label: string; value: string }[];
 }
 
 const formSchema = z.object({
-  title: z.string().min(1, {
-    message: "Title is required",
-  }),
+  categoryId: z.string().min(1),
 });
 
-const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
+const CategoryForm = ({
+  initialData,
+  courseId,
+  options,
+}: CategoryFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
+
+  const selectedCategory = () => {};
+
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues: {
+      categoryId: initialData?.categoryId || "",
+    },
   });
 
   const { isSubmitting, isValid } = form.formState;
@@ -56,22 +65,35 @@ const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
     }
   };
 
+  const selectedOption = options.find(
+    (option) => option.value === initialData.categoryId
+  );
+
   return (
     <div className="mt-6 border-r bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Course title
+        Course Category
         <Button onClick={toggleEdit} variant={"ghost"}>
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Edit title
+              Edit Category
             </>
           )}
         </Button>
       </div>
-      {!isEditing && <p className="text-sm mt-2">{initialData.title}</p>}
+      {!isEditing && (
+        <p
+          className={cn(
+            "text-sm mt-2",
+            !initialData.categoryId && "text-slate-500 italic"
+          )}
+        >
+          {selectedOption?.label || "No category"}
+        </p>
+      )}
       {isEditing && (
         <Form {...form}>
           <form
@@ -80,15 +102,11 @@ const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
           >
             <FormField
               control={form.control}
-              name="title"
+              name="categoryId"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      disabled={isSubmitting}
-                      placeholder="e.g. 'Advanced Web Development"
-                      {...field}
-                    />
+                    <Combobox options={...options} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -104,4 +122,4 @@ const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
   );
 };
 
-export default TitleForm;
+export default CategoryForm;
