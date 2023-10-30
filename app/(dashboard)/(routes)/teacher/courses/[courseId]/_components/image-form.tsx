@@ -50,6 +50,12 @@ const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
               Add Image
             </>
           )}
+          {!isEditing && initialData.imageUrl && (
+            <>
+              <Pencil className="h-4 w-4 mr-2" />
+              Edit Image
+            </>
+          )}
         </Button>
       </div>
       {!isEditing &&
