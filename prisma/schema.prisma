@@ -113,3 +113,19 @@ model StripeCustomer {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+enum DiscountType {
+  PERCENT
+  FIXED
+}
+
+model CouponCodes {
+  id         String       @id @default(uuid())
+  code       String       @unique
+  type       DiscountType
+  value      Float
+  expiresOn  DateTime
+  usageLimit Int
+  usedCount  Int
+  isActive   Boolean
+}
