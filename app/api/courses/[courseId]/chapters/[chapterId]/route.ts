@@ -49,7 +49,12 @@ export async function DELETE(
       });
 
       if (existingMuxData) {
-        await Video.Assets.del(existingMuxData.assetId);
+        try {
+          Video.Assets.del(existingMuxData.assetId);
+        } catch (error) {
+          console.log("[COURSES_CHAPTER_ID_DELETE_MUX]", error);
+        }
+
         await db.muxData.delete({
           where: {
             id: existingMuxData.id,
@@ -85,7 +90,7 @@ export async function DELETE(
 
     return NextResponse.json(deletedChapter);
   } catch (error) {
-    console.log("[COURSES_CHAPTER_ID]", error);
+    console.log("[COURSES_CHAPTER_ID_DELETE]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -133,7 +138,12 @@ export async function PATCH(
       });
 
       if (existingMuxData) {
-        await Video.Assets.del(existingMuxData.assetId);
+        try {
+          Video.Assets.del(existingMuxData.assetId);
+        } catch (error) {
+          console.log("[COURSES_CHAPTER_ID_MUX]", error);
+        }
+
         await db.muxData.delete({
           where: {
             id: existingMuxData.id,
