@@ -1,6 +1,5 @@
 import { CourseWithProgressWithCategory } from "@/actions/get-courses";
-import { Course } from "@prisma/client";
-import { CourseCard } from "./course-card";
+import { CourseCard } from "@/components/course-card";
 
 interface CourseListProps {
   items: CourseWithProgressWithCategory[];
