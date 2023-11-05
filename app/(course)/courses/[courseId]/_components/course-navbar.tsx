@@ -8,13 +8,13 @@ interface CourseNavbarProps {
       userProgress: UserProgress[] | null;
     })[];
   };
-  progressCount: number;
+  progress: number;
 }
 
-export const CourseNavbar = ({ course, progressCount }: CourseNavbarProps) => {
+export const CourseNavbar = ({ course, progress }: CourseNavbarProps) => {
   return (
     <div className="p-4 border-b h-full flex items-center bg-white shadow-sm">
-      <CourseMobileSidebar course={course} progressCount={progressCount} />
+      <CourseMobileSidebar course={course} progress={progress} />
       <NavbarRoutes />
     </div>
   );
